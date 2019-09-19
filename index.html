@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .startPage , .gamePage {
+            width: 100vw;
+            max-width: 1024px;
+            height: 100%;
+            margin: 0 auto;
+            position: absolute;
+            background-color: gray;
+        }
+
+        .gamePage {
+            visibility: hidden
+        }
+
+        .startButton {
+            width: 50%;
+            max-width: 300px;
+            height: 48px;
+            text-align: center;
+            line-height: 48px;
+            letter-spacing: 2px;
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%,-50%)
+        }
+
+        /*gamePage*/
+        ul {
+            width: 60vw;
+            height: fit-content;
+            margin: 150px auto 0 auto;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        /*show result page*/
+        .result {
+            width: 80vw;
+            height: 80vh;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: 1;
+            background-color: red;
+            transform: translate(-50%,-50%)
+        }
+    </style>
+</head>
+<body>
+    <div class='startPage'>
+        <img src='' alt='start-image'>
+        <div class='startButton'>开始游戏</div>
+    </div>
+    <div class='gamePage'>
+        <div class='question'></div>
+        <ul class='gamePool'>
+            <li class='aAnswer'></li>
+            <li class='aAnswer'></li>
+            <li class='aAnswer'></li>
+        </ul>
+    </div>
+    <script>
+        //data
+        var data = {
+            poetry:[
+            {
+                content:'床前明月光，疑是地上霜，举头望明月，低头思故乡',
+                author:'李白'
+
+        },
+        {
+                content:'寥落古行宫，宫花寂寞红，白头宫女在，闲坐说玄宗',
+                author:'杜甫'
+
+        },
+        {
+                content:'白日依山尽，黄河入海流，欲穷千里目，更上一层楼',
+                author:'王之涣'
+
+        },
+        {
+                content:'君自故乡来，应知故乡事，来日绮窗前，寒梅著花未',
+                author:'谁'
+
+        }
+        ],
+            sentenceArray: '',
+            current: 0
+        }
+        //control
+        var startButton = document.querySelector('.startButton'),
+            startPage = document.querySelector('.startPage'),
+            gamePage = document.querySelector('.gamePage'),
+            gamePool = document.querySelector('.gamePool'),
+            question = document.querySelector('.question'),
+            ulChildren = gamePool.children;
+
+        //start game
+        startButton.addEventListener('click',startHander)
+
+        //startButton handler
+        function startHander(){
+            hide(startPage);
+            show(gamePage)
+        }
+
+        function hide (el){
+            el.style.visibility = 'hidden';
+        }
+        function show(el){
+            el.style.visibility = 'visible'
+        }
+
+        //make a question
+        //
+        
+        function makeQ(current){
+            if(current>=data.poetry.length){
+                showResult()
+            }else{
+                data.sentenceArray=data.poetry[data.current].content.split('，')
+                question.innerHTML = '<div>"' + data.sentenceArray[0] + '"的下一句是：</div>';
+                ulChildren[0].innerHTML = data.sentenceArray[1]
+                ulChildren[1].innerHTML = data.sentenceArray[2]
+                ulChildren[2].innerHTML = data.sentenceArray[3]
+            }
+        }
+
+        makeQ()
+
+        //错误答案
+        function chooseWrongSen(){
+
+        }
+        
+        function checkAnswer(e){
+            console.log(1)
+            if(e.target.innerHTML === data.sentenceArray[1]){
+                console.log(e.target.innerHTML,data.sentenceArray[1])
+                data.current++
+                makeQ(data.current)
+            }else{
+                alert('wrong')
+                console.log(e.target.innerHTML,data.sentenceArray[1])
+            }
+        }
+        function ulhandler(event) {
+            console.log(event.target.nodeName)
+            if(event.target.nodeName === 'LI'){
+                checkAnswer(event)
+                event.stopPropagation()
+            }
+            event.stopPro
+        }
+        gamePool.addEventListener('click',ulhandler)
+
+        function showResult(){
+            console.log(123)
+            var div = document.createElement('div')
+            div.className = 'result'
+            div.innerHTML ='niubi'
+            document.body.appendChild(div) 
+        }
+
+        document.addEventListener('click',function(){
+            var div = document.querySelector('.result')
+            if(div){document.body.removeChild(div)}
+        })
+    </script>
+</body>
+</html>
