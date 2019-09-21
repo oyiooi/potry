@@ -1,0 +1,96 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+.startPage , .gamePage {
+    width: 100vw;
+    max-width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+    position: absolute;
+    background-color: gray;
+}
+
+.gamePage {
+    visibility: hidden
+}
+
+.startButton {
+    width: 50%;
+    max-width: 300px;
+    height: 48px;
+    text-align: center;
+    line-height: 48px;
+    letter-spacing: 2px;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%,-50%)
+}
+
+/*gamePage*/
+.time {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+ul {
+    width: 60vw;
+    height: fit-content;
+    margin: 150px auto 0 auto;
+}
+
+li {
+    list-style-type: none;
+    text-align: center;
+    padding: 10px 0;
+    border: 1px solid black;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.nextQ {
+    visibility: hidden;
+}
+
+.question {
+    margin: 50px 0 0 50px;
+}
+
+/*show result page*/
+.result {
+    width: 80vw;
+    height: 80vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    background-color: red;
+    transform: translate(-50%,-50%);
+    visibility: hidden;
+}
+
+.button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 50px;
+    background-color: white;
+}
+
+.reset {
+    left: 30%;
+}
+
+.home {
+    right: 30%;
+}
