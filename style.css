@@ -10,42 +10,87 @@ body {
 }
 
 .startPage , .gamePage {
-    width: 100vw;
+    width: 10rem;
     max-width: 1024px;
     height: 100%;
     margin: 0 auto;
-    position: absolute;
     background-color: gray;
 }
 
 .gamePage {
-    visibility: hidden
+    display: none;
 }
 
 .startButton {
-    width: 50%;
+    width: fit-content;
     max-width: 300px;
-    height: 48px;
     text-align: center;
-    line-height: 48px;
+    font-size: 1rem;
+    font-weight: 900;
+    font-family: cursive;
     letter-spacing: 2px;
+    text-shadow: 0 0 5px #903f3f;
     position: absolute;
-    top: 70%;
+    bottom: 25%;
     left: 50%;
-    transform: translate(-50%,-50%)
+    transform: translate(-50%,-50%);
+    border: 1px solid #070606;
 }
+
+.startButton::before, .startButton::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .startButton::before, .startButton::after {
+    content: '';
+    z-index: -1;
+    margin: -5%;
+    box-shadow: inset 0 0 0 2px;
+    animation: clipMe 8s linear infinite;
+  }
+  .startButton::before {
+    animation-delay: -4s;
+  }
+  .startButton:hover::after, .startButton:hover::before {
+    background-color: rgba(255, 0, 0, 0.3);
+  }
+   
+  @keyframes clipMe {
+    0%, 100% {
+      clip: rect(0px, 220.0px, 2px, 0px);
+    }
+    25% {
+      clip: rect(0px, 2px, 220.0px, 0px);
+    }
+    50% {
+      clip: rect(218.0px, 220.0px, 220.0px, 0px);
+    }
+    75% {
+      clip: rect(0px, 220.0px, 220.0px, 218.0px);
+    }
+  }  
 
 /*gamePage*/
 .time {
-    width: 50px;
-    height: 50px;
+    width: 1.1rem;
+    height: 1.1rem;
+    font-size: 0.7rem;
+    line-height: 1.1rem;
+    text-align: center;
+    margin: 10px auto 0 auto;
     border-radius: 50%;
+    border: 1px solid black;
 }
 
 ul {
-    width: 60vw;
-    height: fit-content;
-    margin: 150px auto 0 auto;
+    width: 8rem;
+    font-size: 0.5rem;
+    letter-spacing: 1px;
+    margin: 2rem auto 0 auto;
 }
 
 li {
@@ -55,42 +100,73 @@ li {
     border: 1px solid black;
     margin: 5px 0;
     border-radius: 5px;
+    letter-spacing: 1px;
 }
 
 .nextQ {
-    visibility: hidden;
+    display: none;
+    position: fixed;
+    width: 4rem;
+    font-size: 1rem;
+    color: white;
+    letter-spacing: 5px;
+    text-align: center;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #1b0e0e;
+    background-color: #608ded;
+    box-shadow: 0 0 10px 0 #3b3131;
 }
 
 .question {
-    margin: 50px 0 0 50px;
+    width: 8rem;
+    margin: 1rem 0 0 1rem;
+    font-size: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 
 /*show result page*/
 .result {
-    width: 80vw;
-    height: 80vh;
+    width: 8rem;
+    height: 12rem;
     position: fixed;
     top: 50%;
     left: 50%;
     z-index: 1;
     background-color: red;
     transform: translate(-50%,-50%);
-    visibility: hidden;
+    display: none;
+    box-shadow: 0 0 10px 0 black;
+}
+
+.lang {
+    width: fit-content;
+    margin: 10px auto 0 auto;
+    font-size: 1rem;
+    font-family: cursive;
 }
 
 .button {
-    width: 50px;
-    height: 50px;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     position: absolute;
-    bottom: 50px;
+    bottom: 1rem;
     background-color: white;
 }
 
 .reset {
-    left: 30%;
+    left: 50%;
+    bottom: 3rem;
+    transform: translateX(-50%);
 }
 
 .home {
-    right: 30%;
+    left: 1rem;
+}
+
+.next {
+    right: 1rem;
 }

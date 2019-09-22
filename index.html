@@ -7,6 +7,20 @@
     <title>Document</title>
     <link href='./style.css' rel='stylesheet'></link>
     <script src='./poetry.js'></script>
+    <script>
+        var doc = document.documentElement
+        function resize(){
+            var w = doc.getBoundingClientRect().width;
+
+            if(w>640) w=640;
+            doc.style.fontSize = ( w / 10) + 'px';
+        }
+
+        resize()
+
+        window.addEventListener('resize',resize,false)
+
+    </script>
 </head>
 <body>
     <div class='startPage'>
@@ -14,6 +28,7 @@
         <div class='startButton'>开始游戏</div>
     </div>
     <div class='gamePage'>
+        <div style='height:1px'></div>
         <div class='time'></div>
         <div class='nextQ'>下一题</div>
         <div class='question'></div>
@@ -24,9 +39,9 @@
         </ul>
         <div class='result'>
             <div class='lang'></div>
-            <div class='button reset'></div>
-            <div class='button home'></div>
-            <div class='button next'></div>
+            <div class='button reset'>re</div>
+            <div class='button home'>h</div>
+            <div class='button next'>n</div>
         </div>
     </div>
     <script src='./index.js'></script>

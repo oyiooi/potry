@@ -46,10 +46,10 @@ function startHander(){
 }
 
 function hide (el){
-    el.style.visibility = 'hidden';
+    el.style.display = 'none';
 }
 function show(el){
-    el.style.visibility = 'visible'
+    el.style.display = 'block'
 }
 
 //make a question
