@@ -135,7 +135,7 @@ li {
     top: 50%;
     left: 50%;
     z-index: 1;
-    background-color: red;
+    background-color: #8e8484;
     transform: translate(-50%,-50%);
     display: none;
     box-shadow: 0 0 10px 0 black;
@@ -149,24 +149,37 @@ li {
 }
 
 .button {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 1rem;
-    background-color: white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 1rem;
+  background-color: #e4810c;
+  text-align: center;
+  line-height: 2rem;
+  box-shadow: 0 0 10px 0 black;
 }
 
 .reset {
-    left: 50%;
-    bottom: 3rem;
-    transform: translateX(-50%);
+    right: 1rem;
+    background-image: url('./image/Refresh.svg');
+    background-size: 80% 80%;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .home {
     left: 1rem;
+    background-image: url('./image/home.svg');
+    background-size: 80% 80%;;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .next {
     right: 1rem;
+    background-image: url('./image/next.svg');
+    background-size: 80% 80%;;
+    background-position: center center;
+    background-repeat: no-repeat;
 }

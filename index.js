@@ -20,8 +20,9 @@ var startButton = document.querySelector('.startButton'),
     resetButton = document.querySelector('.reset'),
     homeButton = document.querySelector('.home'),
     lang = document.querySelector('.lang'),
-    next = document.querySelector('.nextQ'),
-    time = document.querySelector('.time')
+    nextQ = document.querySelector('.nextQ'),
+    time = document.querySelector('.time'),
+    next = document.querySelector('.next'),
     ulChildren = gamePool.children;
 
 //start game
@@ -58,21 +59,28 @@ function makeQ(){
 
 //大于第二关，用新的方法选句子
     //
-    if((data.current!==0)&&((data.current)%3 === 0)){
+    if((data.current!==0)&&((data.current)%3 === 0)&&data.current<9){
         data.currentLevel>2?chooseSen3():chooseSen2()
-        question.innerHTML = '<div>"' + data.questionArray[3] + '"的作者是：</div>';
+        question.innerHTML = '<div>第'+(data.current+1)+'题 "' + data.questionArray[3] + '"的作者是：</div>';
+    }else if((data.current!==0)&&((data.current)%2 === 0)){
+        chooseSen4()
+        question.innerHTML = '<div>第'+(data.current+1)+'题 "'+ data.questionArray[3] + '"的上一句是：</div>';
+    }else if(data.current===9){
+        chooseSen5()
+        question.innerHTML = '<div>第'+(data.current+1)+'题 "'+ data.questionArray[3] + '"出自：</div>';
     }else{
         data.currentLevel>2?chooseSen3():chooseSen()
-        question.innerHTML = '<div>"' + data.questionArray[3] + '"的下一句是：</div>';
+        question.innerHTML = '<div>第'+(data.current+1)+'题 "'+ data.questionArray[3] + '"的下一句是：</div>';
     }
                 
     ulChildren[0].innerHTML = data.questionArray[0]
     ulChildren[1].innerHTML = data.questionArray[1]
     ulChildren[2].innerHTML = data.questionArray[2]
     
+    time.textContent =  10
     alltime = 10
     data.timerid = setInterval(function(){
-        if(alltime>0){
+        if(alltime>=0){
             time.textContent =  alltime--
         }else{
             showfResult()
@@ -94,40 +102,31 @@ function start(){
 function chooseSen(){
     //xuanti
     data.sentenceArray = data.poetry[data.currentLevel][(data.order[data.current])].content.split('，')
-    data.chosenIndex = parseInt(Math.random(0,1)*3)
-    var wrong1Index = parseInt(Math.random(0,1)*6)
-    var wrong2Index,n;
-    function gen(){
-        n = parseInt(Math.random(0,1)*6);
-        console.log(n,wrong1Index)
-        if(n === wrong1Index){
-            gen()
-        }else{
-            wrong2Index = n
-            {var wrong1 = data.poetry[data.currentLevel][wrong1Index].content.split('，')[parseInt(Math.random(0,1)*4)]
-                console.log(wrong2Index)
-                var wrong2 = data.poetry[data.currentLevel][wrong2Index].content.split('，')[parseInt(Math.random(0,1)*4)]
-                
-                data.questionArray[0] = data.sentenceArray[data.chosenIndex]
-                var arr = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]
-                var shunxu = arr[(Math.floor(Math.random(0,1)*3))]
-                data.questionArray[shunxu[0]] = wrong1
-                data.questionArray[shunxu[1]] = wrong2
-                data.questionArray[shunxu[2]] = data.sentenceArray[(data.chosenIndex + 1)]
-                data.questionArray[3] = data.sentenceArray[data.chosenIndex]}
-        }
-    }
-    gen()
+    var a=[0,2]
+
+    data.chosenIndex = a[parseInt(Math.random(0,1)*2)]
+    var wrong1Index = data.chosenIndex===0?3:1
+    var wrong2Index = data.current===0?data.order[data.current+1]:data.order[data.current-1]
+
+    var wrong1 = data.sentenceArray[wrong1Index]
+    var wrong2 = data.poetry[data.currentLevel][wrong2Index].content.split('，')[parseInt(Math.random(0,1)*4)]
+    
+    var arr = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]
+    var shunxu = arr[(Math.floor(Math.random(0,1)*3))]
+    data.questionArray[shunxu[0]] = wrong1
+    data.questionArray[shunxu[1]] = wrong2
+    data.questionArray[shunxu[2]] = data.sentenceArray[(data.chosenIndex + 1)]
+    data.questionArray[3] = data.sentenceArray[data.chosenIndex]
 }
 //选author
 function chooseSen2(){
     var arr = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]
     var shunxu = arr[(Math.floor(Math.random(0,1)*3))]
     //？data。current是第几题
-    data.questionArray[3] = data.poetry[data.currentLevel][data.current].title
-    data.questionArray[shunxu[0]] = data.poetry[data.currentLevel][(data.current + 1)].author
-    data.questionArray[shunxu[1]] = data.poetry[data.currentLevel][(data.current - 1)].author
-    data.questionArray[shunxu[2]] = data.poetry[data.currentLevel][data.current].author
+    data.questionArray[3] = data.poetry[data.currentLevel][data.order[data.current]].title
+    data.questionArray[shunxu[0]] = data.poetry[data.currentLevel][(data.order[data.current+ 1])].author
+    data.questionArray[shunxu[1]] = data.poetry[data.currentLevel][(data.order[data.current- 1])].author
+    data.questionArray[shunxu[2]] = data.poetry[data.currentLevel][data.order[data.current]].author
 }
 
 //律诗
@@ -151,7 +150,6 @@ function chooseSen3(){
     //right answer
     var rightA = data.sentenceArray[(data.chosenIndex + 1)]
     
-    data.questionArray[0] = data.sentenceArray[data.chosenIndex]
     var arr = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]
     var shunxu = arr[(Math.floor(Math.random(0,1)*3))]
     data.questionArray[shunxu[0]] = wrong1
@@ -160,40 +158,109 @@ function chooseSen3(){
     data.questionArray[3] = data.sentenceArray[data.chosenIndex]
 }
 
+//上一句
+function chooseSen4(){
+    data.sentenceArray = data.poetry[data.currentLevel][(data.order[data.current])].content.split('，')
+    var a=[1,3]
+
+    data.chosenIndex = a[parseInt(Math.random(0,1)*2)]
+    var wrong1Index = data.chosenIndex===1?2:0
+    var wrong2Index = data.current===0?data.order[data.current+1]:data.order[data.current-1]
+
+    var wrong1 = data.sentenceArray[wrong1Index]
+    var wrong2 = data.poetry[data.currentLevel][wrong2Index].content.split('，')[parseInt(Math.random(0,1)*4)]
+    
+    var arr = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]
+    var shunxu = arr[(Math.floor(Math.random(0,1)*3))]
+    data.questionArray[shunxu[0]] = wrong1
+    data.questionArray[shunxu[1]] = wrong2
+    data.questionArray[shunxu[2]] = data.sentenceArray[(data.chosenIndex - 1)]
+    data.questionArray[3] = data.sentenceArray[data.chosenIndex]
+}
+
+//出自
+function chooseSen5(){
+    data.sentenceArray = data.poetry[data.currentLevel][(data.order[data.current])].content.split('，')
+    var a=[0,2]
+    var index = a[Math.floor(0,1)*2]
+    var arr = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]
+    var shunxu = arr[(Math.floor(Math.random(0,1)*3))]
+
+    data.questionArray[3] = data.sentenceArray[index] +'，'+ data.sentenceArray[index+1]
+    data.questionArray[shunxu[0]] = data.poetry[data.currentLevel][(data.order[data.current])].title
+    data.questionArray[shunxu[1]] = data.poetry[data.currentLevel][(data.order[data.current-1])].title
+    data.questionArray[shunxu[2]] = data.poetry[data.currentLevel][(data.order[data.current-2])].title
+}
+
 function checkAnswer(e){
 
-    if((data.current!==0)&&((data.current)%3 === 0)){
-        if(e.target.innerHTML === data.poetry[data.currentLevel][data.current].author){
+    if((data.current!==0)&&((data.current)%3 === 0)&&data.current<9){
+        if(e.target.innerHTML === data.poetry[data.currentLevel][data.order[data.current]].author){
             if(data.current<data.order.length-1){
                 clearInterval(data.timerid)
                 data.current++
-                show(next)
+                show(nextQ)
                 setTimeout(function(){
-                    hide(next);makeQ();
+                    hide(nextQ);makeQ();
                 },1500)
             }else{
                 showsResult()
             }
         }else{
             showfResult()
-            alert('wrong')
+        }
+    }else if(data.current!==0 && data.current%2 ===0){
+        if(e.target.innerHTML === data.sentenceArray[(data.chosenIndex-1)]){
+            console.log(e.target.innerHTML,data.sentenceArray[data.chosenIndex-1])
+            console.log(data.current,data.order.length-1)
+            if(data.current<data.order.length-1){
+                clearInterval(data.timerid)
+                data.current++
+                show(nextQ)
+                setTimeout(function(){
+                    hide(nextQ);makeQ();
+                },1500)
+            }else{
+                showsResult()
+            }
+        }else{
+            showfResult()
+            console.log(e.target.innerHTML,data.sentenceArray[data.chosenIndex-1])
+        }
+    }else if(data.current===9){
+        if(e.target.innerHTML === data.poetry[data.currentLevel][data.order[data.current]].title){
+            console.log(e.target.innerHTML,data.poetry[data.currentLevel][data.order[data.current]].title)
+            console.log(data.current,data.order.length-1)
+            if(data.current<data.order.length-1){
+                clearInterval(data.timerid)
+                data.current++
+                show(nextQ)
+                setTimeout(function(){
+                    hide(nextQ);makeQ();
+                },1500)
+            }else{
+                showsResult()
+            }
+        }else{
+            showfResult()
+            console.log(e.target.innerHTML,data.sentenceArray[data.chosenIndex-1])
         }
     }else{
         if(e.target.innerHTML === data.sentenceArray[(data.chosenIndex+1)]){
             console.log(e.target.innerHTML,data.sentenceArray[data.chosenIndex+1])
+            console.log(data.current,data.order.length-1)
             if(data.current<data.order.length-1){
                 clearInterval(data.timerid)
                 data.current++
-                show(next)
+                show(nextQ)
                 setTimeout(function(){
-                    hide(next);makeQ();
+                    hide(nextQ);makeQ();
                 },1500)
             }else{
                 showsResult()
             }
         }else{
             showfResult()
-            alert('wrong')
             console.log(e.target.innerHTML,data.sentenceArray[data.chosenIndex+1])
         }               
     }
@@ -211,12 +278,12 @@ gamePool.addEventListener('click',ulhandler)
 
 function showfResult(){
     clearInterval(data.timerid)
-    lang.textContent ='你答对了' + (data.current) +'道题'
+    lang.textContent ='太弱了，重来吧'
     show(result)  
 }
 
 function showsResult(){
-    lang.textContent ='你答对了' + (data.current+1) +'道题'
+    lang.textContent ='通关，快去下一关'
     show(result)
 }
 
